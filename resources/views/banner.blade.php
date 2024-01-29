@@ -1,0 +1,1 @@
+<div class="content_banner" data-id="{{ $banner->id }}"><a href='{{ $banner->url }}'><p>{{ $banner->name }}</p></a><p>{{ $banner->text }}</p></div>
