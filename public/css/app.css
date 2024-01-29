@@ -3,3 +3,10 @@
     color: #fff;
     padding: 10px;
 }
+.content_banner a {
+    color: #fff;
+    text-decoration: underline;
+}
+.container {
+    padding: 25px 0;
+}

@@ -33,14 +33,20 @@ class PostController extends Controller
     {
         $banners = $this->postBannerRepository->getActiveBannersByPostId($postId);
 
-        if (preg_match_all('/<p>.*?<\/p>/', $text, $matches) >= 2) {
-            $text = preg_replace('/(<p>.*?<\/p>)/', '$1' . view('banner', ['banner' => $banners[0]])->render(), $text, 1);
-            $text = preg_replace('/(<p>.*?<\/p>)(?!.*<p>.*?<\/p>)/', view('banner', ['banner' => $banners[1]])->render() . '$1', $text, 1);
-        } else {
-            foreach ($banners as $banner) {
-                $text .= view('banner', ['banner' => $banner])->render();
-            }
+        $paragraphs = explode('</p>', $text);
+
+        if (end($paragraphs) === '') {
+            array_pop($paragraphs);
         }
+
+        if (isset($banners[0])) {
+            array_splice($paragraphs, 1, 0, view('banner', ['banner' => $banners[0]])->render());
+        }
+        if (isset($banners[1]) && count($paragraphs) > 1) {
+            array_splice($paragraphs, -1, 0, view('banner', ['banner' => $banners[1]])->render());
+        }
+
+        $text = implode('</p>', $paragraphs);
         
         return $text;
     }
